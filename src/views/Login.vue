@@ -44,7 +44,7 @@ import { useRouter } from 'vue-router'
 import axios from '@/plugins/axios'
 
 export default defineComponent({
-  name: 'Login',
+  name: 'LoginView',
   setup () {
     const router = useRouter()
     const username = ref('')
