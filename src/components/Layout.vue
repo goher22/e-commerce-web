@@ -48,7 +48,7 @@ import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 
 export default defineComponent({
-  name: 'Layout',
+  name: 'LayoutView',
   setup () {
     const router = useRouter()
 
@@ -74,7 +74,7 @@ export default defineComponent({
 .active {
   font-weight: bold;
   color: #0d6efd !important;
-  background-color: rgba(0, 0, 0, 0.1); /* Sombreado */
+  background-color: rgba(0, 0, 0, 0.1);
 }
 .nav-link {
   display: flex;
