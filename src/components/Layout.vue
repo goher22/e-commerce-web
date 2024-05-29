@@ -15,13 +15,12 @@
               >
                 <i class="bi bi-house"></i> Home
               </router-link>
-              <!-- Puedes agregar más elementos de menú aquí -->
               <router-link
-                to="/another"
+                to="/products"
                 class="nav-link"
-                :class="{ active: $route.path === '/another' }"
+                :class="{ active: $route.path === '/products' }"
               >
-                <i class="bi bi-file-earmark"></i> Another Page
+                <i class="bi bi-box-seam"></i> Productos
               </router-link>
             </b-nav>
           </div>
@@ -79,7 +78,6 @@ export default defineComponent({
 .nav-link {
   display: flex;
   align-items: center;
-  color: white;
 }
 .nav-link i {
   margin-right: 8px;

@@ -23,6 +23,14 @@ export default createStore<State>({
     addProducts (state, products: Product[]) {
       state.products.push(...products);
     },
+    editProduct (state, product: Product) {
+      const index = state.products.findIndex(p => p.id === product.id);
+      state.products[index] = {...product};
+    },
+    deleteProduct (state, productId: number) {
+      const index = state.products.findIndex(p => p.id === productId);
+      state.products.splice(index, 1);
+    },
     selectProduct (state, product: Product) {
       state.selectedProduct = product
     },
@@ -31,6 +39,44 @@ export default createStore<State>({
     }
   },
   actions: {
+
+
+    async deleteProduct({ commit }, productId: number) {
+      try {
+        await axios.delete(`${apiUrl}/product/${productId}`);
+        commit('deleteProduct', productId)
+      } catch (error) {
+        console.error('Error al eliminar el producto:', error);
+      }
+    },
+
+    async updateProduct({ commit }, product: Product) {
+      try {
+        const response = await axios.put(`${apiUrl}/product/${product.id}`, {
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          stock: product.stock
+        });
+        commit('editProduct', response.data)
+      } catch (error) {
+        console.error('Error al crear el producto:', error);
+      }
+    },
+
+    async createProduct({ commit }, product: Product) {
+      try {
+        const response = await axios.post(`${apiUrl}/product`, {
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          stock: product.stock
+        });
+        commit('addProduct', response.data)
+      } catch (error) {
+        console.error('Error al crear el producto:', error);
+      }
+    },
 
     async fetchProducts ({ commit }, page = 1) {
       try {

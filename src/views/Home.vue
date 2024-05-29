@@ -55,7 +55,6 @@
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted } from 'vue';
 import store from '@/store';
-import axios from '@/plugins/axios';
 import { Product } from '@/models/Product';
 
 export default defineComponent({
@@ -126,15 +125,19 @@ export default defineComponent({
     };
 
     const loadMoreProducts = async () => {
-      const container = productContainer.value;
-      if (container && container.scrollTop + container.clientHeight >= container.scrollHeight) {
-        try {
-          currentPage++;
-          await store.dispatch('fetchProducts', currentPage)
-        } catch (error) {
-          console.error('Error al cargar más productos:', error);
+      const conte: HTMLElement | null = productContainer.value;
+      if(conte!=null){
+        const container = conte as HTMLElement;
+        if (container.scrollTop + container.clientHeight >= container.scrollHeight) {
+          try {
+            currentPage++;
+            await store.dispatch('fetchProducts', currentPage)
+          } catch (error) {
+            console.error('Error al cargar más productos:', error);
+          }
         }
       }
+
     };
 
     const onScroll = () => {
@@ -154,6 +157,7 @@ export default defineComponent({
       selectedProducts,
       displayedProducts,
       totalOrder,
+      loadMoreProducts,
       isSelected,
       toggleProductSelection,
       onScroll,
