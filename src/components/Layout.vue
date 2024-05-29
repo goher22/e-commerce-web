@@ -22,6 +22,13 @@
               >
                 <i class="bi bi-box-seam"></i> Productos
               </router-link>
+              <router-link
+                to="/order"
+                class="nav-link"
+                :class="{ active: $route.path === '/order' }"
+              >
+                <i class="bi bi-box-seam"></i> Orders
+              </router-link>
             </b-nav>
           </div>
           <div>

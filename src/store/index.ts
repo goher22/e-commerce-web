@@ -1,22 +1,31 @@
 import { createStore } from 'vuex'
 import { Product } from '@/models/Product'
+import { Order } from '@/models/Order'
 import axios from '@/plugins/axios'
 
 const apiUrl = process.env.VUE_APP_API_BASE_URL || 'http://127.0.0.1:8080/api'
 
 export interface State {
   products: Product[];
+  orders: Order[];
   selectedProduct: Product | null;
 }
 
 export default createStore<State>({
   state: {
+    orders:[],
     products: [],
     selectedProduct: null
   },
   getters: {
   },
   mutations: {
+    setOrders (state, orders: Order[]) {
+      state.orders = orders
+    },
+    addOrders (state, orders: Order[]) {
+      state.orders.push(...orders);
+    },
     setProducts (state, products: Product[]) {
       state.products = products
     },
@@ -93,7 +102,7 @@ export default createStore<State>({
 
     async createOrder(_, orderDetails) {
       try {
-        const orderResponse = await axios.post('/api/orders', {
+        const orderResponse = await axios.post(`${apiUrl}/order`, {
           documentUser: orderDetails.documentUser,
           nameUser: orderDetails.nameUser,
           orderDate: orderDetails.orderDate
@@ -101,7 +110,7 @@ export default createStore<State>({
         const orderId = orderResponse.data.id;
 
         for (const product of orderDetails.products) {
-          await axios.post('/api/order_item', {
+          await axios.post(`${apiUrl}/order_item`, {
             orderId: orderId,
             product: product.product,
             quantity: product.quantity,
@@ -113,7 +122,20 @@ export default createStore<State>({
         console.error('Error al crear la orden:', error);
         throw error;
       }
-    }
+    },
+
+    async fetchOrders ({ commit }, page = 1) {
+      try {
+        const response = await axios.get(`${apiUrl}/order?page=${page-1}`)
+        if(page>1){
+          commit('addOrders', response.data.result)
+        }else{
+          commit('setOrders', response.data.result)
+        }
+      } catch (error) {
+        console.error('Error al obtener los productos:', error)
+      }
+    },
   },
   modules: {
   }
