@@ -13,7 +13,6 @@ export default defineComponent({
 
 <style scoped>
 .home {
-  text-align: center;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 </style>

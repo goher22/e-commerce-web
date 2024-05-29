@@ -1,16 +1,23 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Login from '@/views/Login.vue'
+import Layout from '@/components/Layout.vue'
 import Home from '@/views/Home.vue'
 import { authMiddleware } from '@/middlewares/authMiddleware'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
-    meta: {
-      requiresAuth: true
-    }
+    component: Layout,
+    children: [
+      {
+        path: '',
+        name: 'Home',
+        component: Home,
+        meta: {
+          requiresAuth: true
+        }
+      }
+    ]
   },
   {
     path: '/login',
